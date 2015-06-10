@@ -435,17 +435,42 @@
 </head>
 
 <body>
-    <!--div style="position:relative">
-      <div id="aboveDiv" style="width:500px;height:300px; position: absolute; background-color:blue; opacity: 0.4"></div-->
-      <canvas id="canvas" width="800" height="450" style="border:1px solid #000000"></canvas>
-    <!--/div-->
+
+    <button onclick="move()">Move</button>
+    <button onclick="draw()">Draw</button>
+    <label>Line width:</label>
+    <input type="range" value="1" min="1" max="30" oninput="changePencilSize(this.value)" onchange="changePencilSize(this.value)">
+
+    <label>Color:</label>
+    <input type="color" name="favcolor" value="#000000" onchange="changePencilColor(this.value)">
+
+    <button onclick="addNote()">Add Annotation</button>
+
+    <br><br>
+    
+    <canvas id="canvas" width="800" height="450" style="border:1px solid #000000"></canvas>
+
     <script>
         var canvas = new fabric.Canvas('canvas');
 
+        canvas.selectionColor = 'rgba(0,255,0,0.3)';
+        canvas.selectionBorderColor = 'red';
+        canvas.selectionLineWidth = 1;
+
+        var drawPost = false;
+
+        function changePencilSize(width){
+            canvas.freeDrawingBrush.width = width;
+        }
+
+        function changePencilColor(color){
+            canvas.freeDrawingBrush.color = color;
+        }
+
         function saveAsJSON(){
-              canvas.item(0).sourcePath = '/assets/image.png';
-              document.getElementById("JsonFile").value = JSON.stringify(canvas.toDatalessJSON());
-          //console.log(JSON.stringify(canvas));
+            canvas.item(0).sourcePath = '/assets/image.png';
+            document.getElementById("JsonFile").value = JSON.stringify(canvas.toDatalessJSON());
+            //console.log(JSON.stringify(canvas));
         }
 
         function loadFrmJSON(){
@@ -455,39 +480,27 @@
         }
 
         function draw() {
-        	canvas.isDrawingMode = true;
+          canvas.isDrawingMode = true;
+            drawPost = false;
         }
 
         function move() {
-        	canvas.isDrawingMode = false;
+          canvas.isDrawingMode = false;
+            drawPost = false;
         }
 
-        function addnote() {
-          var src = document.getElementById("InputText").value;
-          var text = new fabric.IText(src, 
-            { fontFamily: 'Courier New', left: 10, top: 10, fontSize: 12 
-          });
-
-        	var rect = new fabric.Rect();
-				    rect.set({ width: 100, height: 100, fill: '#fff000', opacity: 0.7 })
-          
-          canvas.add(rect);
-          canvas.add(text);
-
-
+        function addNote() {
+            canvas.isDrawingMode = false;
+            drawPost = true;
         }
 
         canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: 100, left: 100 }));
-
-        canvas.selectionColor = 'rgba(0,255,0,0.3)';
-        canvas.selectionBorderColor = 'red';
-        canvas.selectionLineWidth = 5;
 
         var text = new fabric.IText('hello world', { left: 100, top: 100, fontFamily: 'Comic Sans'});
     		canvas.add(text);
 
         // text box, 120x60, with background image, scaled to the textbox dimensions
-        var txtBox = new fabric.Textbox("A Great text to be rendered in the screen, wraped", {
+        var txtBox = new fabric.Textbox("A Great text to be rendered in the screen, wrapped", {
           fontSize: 18,
           fontFamily: 'Arial',
           textAlign: 'center',
@@ -509,15 +522,8 @@
 
         
     </script>
-    <h1>Annotation Content:</h1>
-    <textarea id="InputText" rows="10" cols="80"></textarea>
-    <br>
-    <button onclick="draw()">Draw</button>
-    <button onclick="move()">Move</button>
-    <button onclick="addnote()">Add Annotation</button>
 
     <br>
-
     <textarea id="JsonFile" rows="10" cols="80"></textarea>
     <br>
     <input type="button" value="Save as JSON" onclick="saveAsJSON()">
