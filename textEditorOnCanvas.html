@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<script src="jquery-2.1.4.min.js"></script>
+		<script src="fontMetric.js"></script>
+		<script>
+			$(window).load(function(){
+				var line = document.createElement('div'),
+				    body = document.body;
+				line.style.position = 'absolute';
+				line.style.whiteSpace = 'nowrap';
+				line.style.font = size + 'px ' + family;
+				body.appendChild(line);
+
+				line.innerHTML = 'm'; // It doesn't matter what text goes here
+				this._width = line.offsetWidth;
+				this._height = line.offsetHeight;
+
+				this._metrics = new FontMetrics('"Courier New", Courier, monospace', 14);
+
+				this.context.font = this._metrics.getSize() + 'px ' + this._metrics.getFamily()
+				this.context.fillText('Test', 0, this._metrics.getBaseline());
+			});
+		</script>
+
+	</head>
+	<body>
+		<div class="canvas-text-editor" tabindex="0">
+		    <canvas />
+		    <textarea></textarea>
+		</div>
+	</body>
+</html>

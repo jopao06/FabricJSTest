@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<script src="jquery-2.1.4.min.js"></script>
+		<script>
+			$(window).load(function(){
+				//console.log("Hello");
+				/*var Person = function (firstName) {
+				  this.firstName = firstName;
+				};
+
+				Person.prototype.sayHello = function() {
+				  console.log("Hello, I'm " + this.firstName);
+				};
+
+				var person1 = new Person("Alice");
+				var person2 = new Person("Bob");
+
+				// call the Person sayHello method.
+				person1.sayHello(); // logs "Hello, I'm Alice"
+				person2.sayHello(); // logs "Hello, I'm Bob"*/
+				function CarFactory(name){ 
+				   this.name=name;  
+				} 
+				CarFactory.prototype.CreateNewCar = function(){ 
+				    return new this.constructor("New Car "+ this.name); 
+				} 
+				CarFactory.prototype.toString=function(){ 
+				    return 'Car Factory ' + this.name;
+				} 
+
+				AudiFactory.prototype = new CarFactory();      // Here's where the inheritance occurs 
+				AudiFactory.prototype.constructor=AudiFactory;       // Otherwise instances of Audi would have a constructor of Car 
+
+				function AudiFactory(name){ 
+				    this.name=name;
+				} 
+
+				AudiFactory.prototype.toString=function(){ 
+				    return 'Audi Factory ' + this.name;
+				} 
+
+				var myAudiFactory = new AudiFactory('Jopao');
+				  alert('Hay your new ' + myAudiFactory + ' is ready.. Start Producing new audi cars !!! ');            
+
+				var newCar =  myAudiFactory.CreateNewCar(); // calls a method inherited from CarFactory 
+				alert(newCar); 
+
+				/*
+				Without resetting prototype constructor back to instance, new cars will not come from New Audi factory, Instead it will come from car factory ( base class )..   Dont we want our new car from Audi factory ???? 
+				*/
+			});
+		</script>
+
+	</head>
+	<body>
+		<script>
+
+		</script>
+	</body>
+</html>
