@@ -86,10 +86,10 @@
             ctx.save();
             ctx.beginPath();
             ctx.rect(
-              0 - (this.noteWidth/2),                //x
-              0 - (this.noteHeight/2),                //y
-              this.noteWidth,                   //width
-              this.noteHeight                   //height
+              0 - ((this.getBoundingRectWidth()/2)+this.notePadding),                //x
+              0 - ((this.getBoundingRectHeight()/2)+this.notePadding),                //y
+              noteWidth = this.getBoundingRectWidth()+(2*this.notePadding),                   //width
+              noteHeight = this.getBoundingRectHeight()+(2*this.notePadding)                   //height
             );
             ctx.clip();
 
@@ -116,10 +116,10 @@
             ctx.restore();
             ctx.beginPath();
             ctx.rect(
-              0 - ((this.noteWidth/2)+this.notePadding),                //x
-              0 - ((this.noteHeight/2)+this.notePadding),                //y
-              this.noteWidth+(2*this.notePadding),                   //width
-              this.noteHeight+(2*this.notePadding)                   //height
+              0 - ((this.getBoundingRectWidth()/2)+this.notePadding),                //x
+              0 - ((this.getBoundingRectHeight()/2)+this.notePadding),                //y
+              noteWidth = this.getBoundingRectWidth()+(2*this.notePadding),                   //width
+              noteHeight = this.getBoundingRectHeight()+(2*this.notePadding)                   //height
             );
             ctx.lineWidth = (this.notePadding*2)+1;
             ctx.strokeStyle="#FFFF99";
@@ -150,11 +150,11 @@
     <label>Color:</label>
     <input type="color" name="favcolor" value="#000000" onchange="changePencilColor(this.value)">
 
-    <button onclick="addNote()">Add Annotation</button>
+    <button onclick="addIndicator()">Add Indicator</button>
 
     <br><br>
     
-    <canvas id="canvas" width="800" height="450" style="border:1px solid #000000"></canvas>
+    <canvas id="canvas" width="800" height="450" style="border:1px solid #000000"></canvas>\
 
     <script>
         var canvas = new fabric.Canvas('canvas');
@@ -192,19 +192,42 @@
 
         function draw() {
           canvas.isDrawingMode = true;
-            drawPost = false;
+          drawPost = false;
         }
 
         function move() {
           canvas.isDrawingMode = false;
-            drawPost = false;
+          drawPost = false;
         }
 
-        function addNote() {
-            canvas.isDrawingMode = false;
-            drawPost = true;
+        function addIndicator() {
+          canvas.isDrawingMode = false;
+          drawPost = true;
+
+          
         }
 
+        /*var indicator = new fabric.Rect({ 
+          height:10,
+          width:10, 
+          fill: '#f55', 
+          top: pointer.y, 
+          left: pointer.x,
+          selectable: false 
+        });
+        indicator.on('selected',function(){
+            var pointer = canvas.getPointer(event.e);
+            alert("Hello po");
+        });
+        canvas.on('mouse:down',function(options){
+          if (drawPost) {
+            //console.log('an object was clicked!');
+            //console.log(options);// you can check all options here
+            //console.log(options.e.clientX);
+            canvas.add(indicator);
+          }
+          
+        });*/
         canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: 100, left: 100 }));
 
         var text = new fabric.IText('hello world', { left: 100, top: 100, fontFamily: 'Comic Sans'});
